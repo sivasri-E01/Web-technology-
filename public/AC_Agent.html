@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuraChef Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root { --primary:#E77D22; --bg:#FDFCFB; --panel:#FFFFFF; --text:#1a1a1a; --muted:#888; --border:rgba(0,0,0,0.08); --shadow:0 8px 32px rgba(0,0,0,0.08);} 
+    body { margin:0; font-family:'Roboto',sans-serif; background:var(--bg); color:var(--text);} 
+    header { display:flex; align-items:center; justify-content:space-between; padding:20px 28px; background:#fff; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:10; }
+    .brand { font-family:'Playfair Display',serif; font-size:1.6rem; }
+    .brand span { color:var(--primary);} 
+    .container { max-width:1100px; margin:24px auto; padding:0 20px; }
+    .search-panel { background:var(--panel); border:1px solid var(--border); border-radius:14px; box-shadow:var(--shadow); padding:18px; display:flex; gap:12px; align-items:center; }
+    .search-panel input { flex:1; padding:14px 16px; border:1px solid var(--border); border-radius:10px; font-size:1rem; }
+    .btn { background:var(--primary); color:#fff; border:none; padding:12px 18px; border-radius:10px; font-weight:700; cursor:pointer; }
+    .two-col { display:grid; grid-template-columns: 1.1fr 0.9fr; gap:22px; margin-top:22px; }
+    .card { background:#fff; border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); padding:18px; }
+    h2 { font-family:'Playfair Display',serif; margin:0 0 10px; }
+    .meta { display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 16px; }
+    .meta span { border:1px solid var(--border); border-radius:18px; padding:6px 10px; font-size:.85rem; }
+    .img-shell { position:relative; width:100%; aspect-ratio:16/10; border-radius:12px; overflow:hidden; background:linear-gradient(90deg,#eee,#f6f6f6,#eee); }
+    .img-shell img { width:100%; height:100%; object-fit:cover; display:block; opacity:0; transition:opacity .35s ease; }
+    .img-shell.loaded img { opacity:1; }
+    .missing { background:#fff8f3; border:1px dashed #f3b07b; padding:12px; border-radius:12px; }
+    ul { padding-left:18px; line-height:1.6; }
+
+    /* Agent Modal (75% screen) */
+    .overlay { position:fixed; inset:0; background:rgba(253,252,251,0.55); backdrop-filter: blur(4px); display:none; align-items:center; justify-content:center; z-index:1000; }
+    .overlay.active { display:flex; }
+    .panel { width:75vw; height:75vh; background:rgba(255,255,255,0.9); border:1px solid rgba(0,0,0,0.06); border-radius:18px; box-shadow:0 20px 60px rgba(0,0,0,0.15); display:flex; flex-direction:column; overflow:hidden; }
+    .panel-header { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid var(--border); }
+    .panel-body { padding:20px; overflow:auto; }
+    .progress { max-width:680px; margin: 0 auto; }
+    .step { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px dashed var(--border);} 
+    .step i { width:28px; height:28px; display:grid; place-items:center; border-radius:50%; background:#f7f7f7; }
+    .step.done i { background:#eaf8f0; color:#2e7d32; }
+    .muted { color:var(--muted);} 
+    .row { display:flex; gap:12px; align-items:center; justify-content:flex-end; margin-top:14px; }
+    a.link { color:var(--primary); font-weight:600; text-decoration:none; }
+
+    /* Cinematic add-to-bag visuals */
+    .sim-wrap { max-width:760px; margin:18px auto; display:grid; grid-template-columns: 1fr 120px; gap:18px; align-items:start; }
+    .items-stream { display:flex; flex-wrap:wrap; gap:10px; min-height:56px; }
+    .chip { padding:8px 12px; border-radius:20px; background:#fff; border:1px solid var(--border); box-shadow:0 2px 8px rgba(0,0,0,.05); font-weight:600; }
+    .bag { position:relative; width:110px; height:140px; border-radius:12px; border:1px solid var(--border); background:linear-gradient(180deg,#fff,#fafafa); box-shadow:0 10px 30px rgba(0,0,0,.08); display:grid; place-items:center; }
+    .bag::after { content:'🛍️'; font-size:42px; }
+    .delivery { text-align:center; margin-top:6px; font-size:40px; }
+    .fly { position:fixed; pointer-events:none; z-index:2000; transition: transform .7s cubic-bezier(.2,.8,.2,1), opacity .7s; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Aura<span>Chef</span> Agent</div>
+    <nav>
+      <a class="link" href="/dashboard.html">Back to Dashboard</a>
+    </nav>
+  </header>
+  <div class="container">
+    <div class="search-panel">
+      <input id="recipeQuery" placeholder="What do you want to cook? e.g., Paneer Butter Masala" />
+      <button id="agentGo" class="btn"><i class="fas fa-wand-magic-sparkles"></i> Generate</button>
+    </div>
+    <div class="two-col">
+      <section class="card" id="recipeCard">
+        <h2 id="rTitle">Your recipe will appear here</h2>
+        <div class="meta"><span id="rCuisine"></span><span id="rTime"></span><span id="rDiff"></span></div>
+        <div class="img-shell" id="rImageShell"><img id="rImage" alt="dish image"></div>
+        <p class="muted" id="rDesc" style="margin-top:12px"></p>
+        <h3>Ingredients</h3>
+        <ul id="rIngredients"></ul>
+        <h3>Steps</h3>
+        <ol id="rSteps" style="padding-left:18px; line-height:1.6;"></ol>
+        <h3>Nutritional Info</h3>
+        <ul id="rNutri"></ul>
+      </section>
+      <aside class="card">
+        <h2>Pantry Check</h2>
+        <div id="missingWrap" class="missing" style="display:none;"></div>
+        <div class="row">
+          <button id="orderBtn" class="btn" disabled><i class="fas fa-bolt"></i> Order Missing Items</button>
+          <a id="openFull" class="link" href="#" target="_blank" rel="noopener">Open full Order Processor</a>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="overlay" id="orderOverlay" role="dialog" aria-modal="true" aria-label="Order Processor">
+    <div class="panel">
+      <div class="panel-header">
+        <strong>Quick Commerce Simulation</strong>
+        <button id="closeOverlay" class="btn" style="background:#555;">Close</button>
+      </div>
+      <div class="panel-body">
+        <div class="sim-wrap">
+          <div>
+            <div class="items-stream" id="itemsStream"></div>
+          </div>
+          <div>
+            <div class="bag" id="bag"></div>
+            <div class="delivery" id="delivery">🧑🏽‍🦱🛵</div>
+          </div>
+        </div>
+        <div class="progress" id="progress"></div>
+        <div class="row">
+          <button id="confirmBtn" class="btn" style="display:none;"><i class="fas fa-check"></i> Confirm Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Auth header from localStorage
+    let token = null; try { token = JSON.parse(localStorage.getItem('auraChefUser'))?.token || null; } catch {}
+    const HEADERS = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
+    if (!token) { window.location.href = '/index.html'; }
+
+    const qs = {
+      input: document.getElementById('recipeQuery'),
+      go: document.getElementById('agentGo'),
+      title: document.getElementById('rTitle'),
+      cuisine: document.getElementById('rCuisine'),
+      time: document.getElementById('rTime'),
+      diff: document.getElementById('rDiff'),
+      imgShell: document.getElementById('rImageShell'),
+      img: document.getElementById('rImage'),
+      desc: document.getElementById('rDesc'),
+      ing: document.getElementById('rIngredients'),
+      steps: document.getElementById('rSteps'),
+      nutri: document.getElementById('rNutri'),
+      missingWrap: document.getElementById('missingWrap'),
+      orderBtn: document.getElementById('orderBtn'),
+      openFull: document.getElementById('openFull'),
+      overlay: document.getElementById('orderOverlay'),
+      progress: document.getElementById('progress'),
+      closeOverlay: document.getElementById('closeOverlay'),
+      confirmBtn: document.getElementById('confirmBtn')
+    };
+
+    let lastRecipe = null;
+    const sim = {
+      itemsStream: document.getElementById('itemsStream'),
+      bag: document.getElementById('bag'),
+      delivery: document.getElementById('delivery'),
+      pantry: []
+    };
+
+    qs.go.addEventListener('click', () => runAgent());
+    qs.input.addEventListener('keydown', (e) => { if (e.key === 'Enter') runAgent(); });
+    // Redirect to full processor with payload
+    qs.orderBtn.addEventListener('click', () => redirectToProcessor());
+    qs.closeOverlay.addEventListener('click', () => qs.overlay.classList.remove('active'));
+    qs.openFull.addEventListener('click', (e) => {
+      e.preventDefault();
+      const items = qs.orderBtn.dataset.items ? JSON.parse(qs.orderBtn.dataset.items) : [];
+      const payload = {
+        items,
+        recipe: {
+          title: lastRecipe?.title || (qs.title.textContent || 'Recipe Order'),
+          image: lastRecipe?.image || qs.img?.src || ''
+        },
+        createdAt: Date.now()
+      };
+      localStorage.setItem('ac_order_payload', JSON.stringify(payload));
+      window.open('/order_processor.html', '_blank', 'noopener');
+    });
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const r = await fetch('/api/users/profile', { headers: HEADERS });
+        if (r.ok) { const p = await r.json(); sim.pantry = Array.isArray(p?.pantry) ? p.pantry : []; }
+      } catch {}
+    });
+
+    async function runAgent() {
+      const q = qs.input.value.trim(); if (!q) return;
+      qs.go.disabled = true; qs.go.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+      try {
+        const resp = await fetch('/api/recipes/agent', { method: 'POST', headers: HEADERS, body: JSON.stringify({ query: q }) });
+        const data = await resp.json();
+        if (!resp.ok) throw new Error(data.message || 'Failed');
+        const r = data.recipe || {};
+        renderRecipe(r);
+        // Refine the missing list via smart diff API (handles synonyms and fuzzy matches)
+        try {
+          const dResp = await fetch('/api/recipes/diff', { method:'POST', headers: HEADERS, body: JSON.stringify({ ingredients: r.ingredients || [], pantry: sim.pantry }) });
+          const d = await dResp.json();
+          renderMissing(Array.isArray(d?.missing) ? d.missing : (data.missing || []));
+        } catch {
+          renderMissing(data.missing || []);
+        }
+      } catch (e) {
+        alert('Agent error: ' + e.message);
+      } finally {
+        qs.go.disabled = false; qs.go.innerHTML = '<i class="fas fa-wand-magic-sparkles"></i> Generate';
+      }
+    }
+
+    function renderRecipe(r) {
+      lastRecipe = r || null;
+      qs.title.textContent = r.title || 'Recipe';
+      qs.cuisine.textContent = r.cuisine ? ('Cuisine: ' + r.cuisine) : '';
+      qs.time.textContent = r.cookTime ? ('Time: ' + r.cookTime) : '';
+      qs.diff.textContent = r.difficulty ? ('Difficulty: ' + r.difficulty) : '';
+      qs.desc.textContent = r.description || '';
+      qs.ing.innerHTML = (Array.isArray(r.ingredients) ? r.ingredients : []).map(i => `<li>${i}</li>`).join('');
+      qs.steps.innerHTML = (Array.isArray(r.steps) ? r.steps : []).map((s,i) => `<li><strong>Step ${i+1}:</strong> ${s}</li>`).join('');
+      const n = r.nutritionalInfo || {}; qs.nutri.innerHTML = Object.entries(n).map(([k,v]) => `<li><strong>${k}:</strong> ${v}</li>`).join('');
+      // image
+      qs.imgShell.classList.remove('loaded');
+      qs.img.alt = r.title + ' plated dish';
+      qs.img.src = r.image || '';
+      qs.img.onload = () => qs.imgShell.classList.add('loaded');
+      qs.img.onerror = () => {
+        qs.imgShell.classList.add('loaded');
+        qs.img.src = 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=640&q=80';
+      };
+    }
+
+    function renderMissing(list) {
+      if (!Array.isArray(list) || list.length === 0) {
+        qs.missingWrap.style.display = 'none';
+        qs.orderBtn.disabled = true;
+        qs.orderBtn.dataset.items = '[]';
+        return;
+      }
+      qs.missingWrap.style.display = 'block';
+      qs.missingWrap.innerHTML = `<strong>Missing Items (${list.length}):</strong><ul style="margin:8px 0 0 18px">${list.map(i=>`<li>${i}</li>`).join('')}</ul>`;
+      qs.orderBtn.disabled = false;
+      qs.orderBtn.dataset.items = JSON.stringify(list);
+    }
+
+    function redirectToProcessor() {
+      const items = qs.orderBtn.dataset.items ? JSON.parse(qs.orderBtn.dataset.items) : [];
+      if (!items.length) return;
+      const payload = {
+        items,
+        recipe: {
+          title: lastRecipe?.title || (qs.title.textContent || 'Recipe Order'),
+          image: lastRecipe?.image || qs.img?.src || ''
+        },
+        createdAt: Date.now()
+      };
+      localStorage.setItem('ac_order_payload', JSON.stringify(payload));
+      window.location.href = '/order_processor.html';
+    }
+
+    async function animateItemsIntoBag(items) {
+      if (!sim.itemsStream || !sim.bag) return;
+      for (const item of items) {
+        const chip = document.createElement('div'); chip.className='chip'; chip.textContent=item;
+        sim.itemsStream.appendChild(chip);
+        const fly = document.createElement('div'); fly.className='chip fly'; fly.textContent=item;
+        document.body.appendChild(fly);
+        const from = chip.getBoundingClientRect(); const to = sim.bag.getBoundingClientRect();
+        fly.style.left = from.left + 'px'; fly.style.top = from.top + 'px';
+        await new Promise(r=> requestAnimationFrame(r));
+        const dx = to.left - from.left + (Math.random()*20-10);
+        const dy = to.top - from.top + (Math.random()*10-5);
+        fly.style.transform = `translate(${dx}px, ${dy}px) scale(.6)`; fly.style.opacity='0.1';
+        await new Promise(r=> setTimeout(r, 700));
+        fly.remove();
+        await new Promise(r=> setTimeout(r, 120));
+      }
+      // Bag wiggle
+      sim.bag.animate([{ transform:'translateY(0)' },{ transform:'translateY(-4px)' },{ transform:'translateY(0)' }], { duration: 380, iterations:1 });
+    }
+
+    function renderProgress(data) {
+      const steps = [
+        'Checking your kitchen','Found missing items','Searching quick commerce','Added to cart','Please confirm','Order placed'
+      ];
+      let i = 0;
+      const addStep = () => {
+        const s = document.createElement('div'); s.className='step';
+        s.innerHTML = `<i class="fas fa-circle"></i><div>${steps[i]}</div>`;
+        qs.progress.appendChild(s);
+        setTimeout(()=> { s.classList.add('done'); s.querySelector('i').className = 'fas fa-check'; }, 150);
+        i++;
+        if (i < steps.length) {
+          if (steps[i] === 'Please confirm') {
+            // show confirm button when reaching confirm
+            qs.confirmBtn.style.display = 'inline-block';
+            qs.confirmBtn.onclick = () => {
+              qs.confirmBtn.style.display = 'none';
+              if (sim.bag) sim.bag.animate([{ transform:'translateX(0)' },{ transform:'translateX(40px)' },{ transform:'translateX(0)' }], { duration: 500, iterations:1 });
+              addStep(); // proceed to 'Order placed'
+            };
+          } else {
+            setTimeout(addStep, 900);
+          }
+        } else {
+          // Finished
+          const done = document.createElement('p');
+          done.className='muted'; done.style.marginTop='10px';
+          done.textContent = `Order ${data.orderId} placed for ${data.items.length} item(s).`;
+          qs.progress.appendChild(done);
+          if (sim.delivery) sim.delivery.animate([{ transform:'translateX(0)' },{ transform:'translateX(120px)' }], { duration: 900, iterations:1 });
+        }
+      };
+      addStep();
+    }
+  </script>
+</body>
+</html>

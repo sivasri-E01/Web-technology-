@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuraChef Quick | Cinematic Delivery Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      /* Cinematic Color Palette */
+      --brand-primary: #8b5cf6; /* Vibrant Purple */
+      --brand-secondary: #f59e0b; /* Amber */
+      --brand-accent: #06b6d4; /* Cyan */
+      --brand-glow: rgba(139, 92, 246, 0.4);
+      --background: #0f0f23; /* Deep Space Blue */
+      --card-bg: rgba(30, 30, 46, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-glow: rgba(255, 255, 255, 0.8);
+      --success: #10b981; /* Emerald */
+      --success-glow: rgba(16, 185, 129, 0.4);
+      --danger: #ef4444;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      --cinematic-glow: 0 0 20px var(--brand-glow);
+    }
+    
+    * { 
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--background);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.6;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Cinematic Background Elements */
+    .cinematic-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+
+    .star {
+      position: absolute;
+      background-color: white;
+      border-radius: 50%;
+      animation: twinkle 5s infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    .aura-pulse {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, transparent 0%, var(--brand-glow) 70%, transparent 100%);
+      opacity: 0.1;
+      animation: pulseAura 15s infinite alternate;
+    }
+
+    @keyframes pulseAura {
+      0% { transform: scale(0.8); opacity: 0.05; }
+      100% { transform: scale(1.2); opacity: 0.1; }
+    }
+
+    header {
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(15, 15, 35, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--card-border);
+      z-index: 100;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: .5px;
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 15px var(--brand-glow);
+    }
+
+    .back {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back:hover { 
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 10px var(--brand-glow);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    .hero {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 32px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(6, 182, 212, 0.1));
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-lg), var(--cinematic-glow);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      transform: translateX(-100%);
+      animation: shimmer 8s infinite;
+    }
+    
+    @keyframes shimmer {
+      100% { transform: translateX(100%); }
+    }
+    
+    .hero img {
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(139, 92, 246, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    .hero .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      margin: 0;
+      background: linear-gradient(90deg, #fff, var(--brand-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+    .muted { 
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+    
+    .card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg), 0 0 25px var(--brand-glow);
+    }
+    
+    .card h3 {
+      margin: 0 0 20px;
+      font-size: 1.4rem;
+      letter-spacing: .3px;
+      color: var(--text-primary);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .card h3 i {
+      color: var(--brand-primary);
+      text-shadow: 0 0 10px var(--brand-glow);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+      color: #fff;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      letter-spacing: .3px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:hover { 
+      transform: translateY(-3px); 
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.6);
+    }
+    
+    .btn:active {
+      transform: translateY(1px);
+    }
+    
+    .btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      background: #4b5563;
+    }
+
+    /* Analysis timeline - Cinematic Version */
+    .timeline { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 16px; 
+    }
+    
+    .tstep { 
+      display: flex; 
+      gap: 16px; 
+      align-items: center; 
+      padding: 16px; 
+      border: 1px solid var(--card-border); 
+      border-radius: 16px; 
+      background: rgba(255, 255, 255, 0.05);
+      opacity: 0; 
+      transform: translateX(-30px); 
+      animation: fadeInSlide 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tstep::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+      transform: translateX(-100%);
+    }
+    
+    .tstep.animating::before {
+      animation: scanLine 1.5s ease;
+    }
+    
+    @keyframes scanLine {
+      100% { transform: translateX(100%); }
+    }
+    
+    .tstep i { 
+      width: 36px; 
+      height: 36px; 
+      display: grid; 
+      place-items: center; 
+      border-radius: 50%; 
+      background: rgba(139, 92, 246, 0.2); 
+      color: var(--brand-primary); 
+      transition: all 0.5s ease; 
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+    }
+    
+    .tstep.done i { 
+      background: rgba(16, 185, 129, 0.2); 
+      color: var(--success); 
+      transform: scale(1.1) rotate(360deg); 
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+    }
+    
+    .tstep.done { 
+      border-color: rgba(16, 185, 129, 0.3); 
+      background: rgba(16, 185, 129, 0.05);
+    }
+    
+    @keyframes fadeInSlide { 
+      to { 
+        opacity: 1; 
+        transform: translateX(0); 
+      } 
+    }
+
+    /* Cart - Cinematic Version */
+    .cart { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 14px; 
+      max-height: 280px; 
+      overflow-y: auto; 
+      padding-right: 8px;
+    }
+    
+    /* Custom scrollbar */
+    .cart::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .cart::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+    }
+    
+    .cart::-webkit-scrollbar-thumb {
+      background: var(--brand-primary);
+      border-radius: 10px;
+    }
+    
+    .line { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      gap: 12px; 
+      padding: 16px; 
+      border: 1px solid var(--card-border); 
+      border-radius: 14px; 
+      background: rgba(255, 255, 255, 0.03);
+      transform: translateY(20px); 
+      opacity: 0; 
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .line::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--brand-primary), var(--brand-accent));
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+    
+    .line.show::before {
+      transform: scaleY(1);
+    }
+    
+    .line.show { 
+      animation: slideUpItem .6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+    }
+    
+    .price { 
+      color: var(--text-primary); 
+      font-weight: 700; 
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .total { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      padding-top: 20px; 
+      border-top: 1px dashed var(--card-border); 
+      margin-top: 16px; 
+      font-weight: 700; 
+      font-size: 1.2rem; 
+    }
+    
+    .total .price { 
+      color: var(--brand-primary); 
+      font-size: 1.4rem; 
+    }
+    
+    @keyframes slideUpItem { 
+      from { 
+        transform: translateY(20px); 
+        opacity:0; 
+      } 
+      to { 
+        transform: translateY(0); 
+        opacity:1; 
+      } 
+    }
+
+    /* CINEMATIC PACKING & HANDOFF - Next Level */
+    .cinematic-stage {
+      grid-column: 1 / -1;
+      position: relative;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      perspective: 1200px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: rgba(30, 30, 46, 0.5);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow-lg), 0 0 30px var(--brand-glow);
+    }
+    
+    .cinematic-stage::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 30% 70%, rgba(139, 92, 246, 0.1), transparent 50%),
+                  radial-gradient(circle at 70% 30%, rgba(6, 182, 212, 0.1), transparent 50%);
+      z-index: -1;
+    }
+
+    .packing-area {
+      flex-grow: 1;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 40px;
+      align-items: center;
+      padding: 30px;
+      transition: opacity 0.8s;
+      position: relative;
+      z-index: 10;
+    }
+    
+    .packing-area.fade-out { 
+      opacity: 0; 
+      pointer-events: none;
+    }
+
+    .items-list { 
+      min-height: 44px; 
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+    }
+    
+    .item-chip {
+      padding: 10px 18px;
+      background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 999px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      display: inline-block;
+      opacity: 0;
+      transform: translateX(-30px);
+      color: var(--text-primary);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .item-chip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transform: translateX(-100%);
+    }
+    
+    .item-chip.visible { 
+      animation: fadeInSlide 0.5s forwards; 
+    }
+    
+    .item-chip.visible::before {
+      animation: shimmerChip 2s infinite;
+    }
+    
+    @keyframes shimmerChip {
+      100% { transform: translateX(100%); }
+    }
+    
+    .item-chip.packing {
+      position: absolute;
+      z-index: 20;
+      transition: all 1s cubic-bezier(0.5, -0.25, 0.5, 1.25);
+    }
+    
+    .flight-chip {
+      position: fixed;
+      z-index: 300;
+      pointer-events: none;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-accent));
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: .9rem;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(139, 92, 246, 0.5);
+      will-change: transform, opacity;
+      letter-spacing: .3px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Enhanced 3D Box */
+    .box-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto;
+      transform-style: preserve-3d;
+      transform: translateY(10px) rotateX(-15deg) rotateY(25deg);
+      transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+    }
+    
+    .box-container.centered { 
+      transform: rotateX(0deg) rotateY(0deg) translateX(100px) scale(1.3); 
+    }
+
+    .box-face {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(135deg, #4c1d95, #7c3aed);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .box-bottom {
+      width: 180px; 
+      height: 180px;
+      background: linear-gradient(135deg, #3c1361, #5b21b6);
+      transform: translateY(90px) rotateX(90deg) translateZ(0);
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .box-side {
+      width: 180px; 
+      height: 120px;
+      background: linear-gradient(to top, #5b21b6, #7c3aed);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .front { transform: translateZ(90px); }
+    .back { transform: translateZ(-90px) rotateY(0deg); }
+    .left { transform: translateX(-90px) rotateY(-90deg); }
+    .right { transform: translateX(90px) rotateY(90deg); }
+
+    .box-flap {
+      position: absolute;
+      width: 180px;
+      height: 90px;
+      background: linear-gradient(to bottom, #7c3aed, #5b21b6);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      top: -90px;
+      transform-origin: bottom;
+      transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .flap-front { transform: rotateX(90deg); }
+    .flap-back { transform: rotateX(-90deg); }
+    .flap-left { width: 180px; height: 90px; left: -90px; top: -90px; transform: rotateY(90deg) rotateX(90deg); }
+    .flap-right { width: 180px; height: 90px; left: 90px; top: -90px; transform: rotateY(-90deg) rotateX(90deg); }
+
+    .box-container.closed .flap-front,
+    .box-container.closed .flap-back { transform: rotateX(0deg); transition-delay: 0.5s; }
+    .box-container.closed .flap-left,
+    .box-container.closed .flap-right { transform: rotateY(0) rotateX(0deg); transition-delay: 0s; }
+    
+    .box-logo {
+        position: absolute;
+        width: 180px; 
+        height: 180px;
+        top: 0; 
+        left: 0;
+        display: grid;
+        place-items: center;
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fff, var(--brand-accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        opacity: 0;
+        transform: translateZ(91px);
+        transition: opacity 0.8s ease 1.2s;
+        text-shadow: 0 0 15px var(--brand-glow);
+    }
+    
+    .box-container.closed .box-logo { opacity: 1; }
+
+    /* Enhanced Handoff Animation */
+    .delivery-person {
+      font-size: 10rem;
+      position: absolute;
+      right: -200px;
+      bottom: 80px;
+      opacity: 0;
+      transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+      z-index: 20;
+    }
+    
+    .delivery-person.visible {
+      opacity: 1;
+      right: 200px;
+    }
+    
+    .box-container.handed-off {
+      transition: transform 1s cubic-bezier(0.45, 0, 0.55, 1);
+      transform: translateX(400px) translateY(80px) rotateY(-20deg) scale(0.9);
+    }
+    
+    .delivery-person.gone, .box-container.gone {
+        transition: opacity 0.8s ease, transform 0.8s ease;
+        opacity: 0;
+        transform: translateX(600px);
+    }
+
+    #result {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-top: 30px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    #result.show { 
+      opacity: 1; 
+      transform: translateY(0); 
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Cinematic Road Delivery */
+    .road { 
+      width:100%; 
+      height:180px; 
+      margin-top:60px; 
+      position:relative; 
+      overflow:hidden; 
+      opacity:0; 
+      transform:translateY(30px); 
+      transition:opacity .8s ease, transform .8s ease; 
+    }
+    
+    .road-track { 
+      position:absolute; 
+      left:0; 
+      top:50%; 
+      width:130%; 
+      height:90px; 
+      transform:translateY(-50%); 
+      background:linear-gradient(180deg,#1f2937,#111827); 
+      border-top:4px solid #374151; 
+      border-bottom:4px solid #374151; 
+      box-shadow:0 15px 40px -10px rgba(0,0,0,.6) inset; 
+    }
+    
+    .road-track:after { 
+      content:""; 
+      position:absolute; 
+      left:0; 
+      top:50%; 
+      transform:translateY(-50%); 
+      height:8px; 
+      width:100%; 
+      background:repeating-linear-gradient(90deg,#fefefe 0 50px, rgba(255,255,255,0) 50px 100px); 
+      opacity:.9; 
+    }
+    
+    .road.active { 
+      opacity:1; 
+      transform:translateY(0); 
+    }
+    
+    @keyframes driveAcross { 
+      0% { 
+        transform:translateX(-10%) translateY(-50%) scale(.9) rotateY(10deg); 
+      } 
+      60% { 
+        transform:translateX(40%) translateY(-52%) scale(.9) rotateY(0deg); 
+      } 
+      100% { 
+        transform:translateX(105%) translateY(-50%) scale(.85) rotateY(-10deg); 
+      } 
+    }
+    
+    @keyframes courierAcross { 
+      0% { 
+        transform:translateX(-5%) translateY(0) scale(1); 
+      } 
+      100% { 
+        transform:translateX(110%) translateY(0) scale(1); 
+      } 
+    }
+    
+    .road-box { 
+      position:absolute; 
+      top:50%; 
+      left:0; 
+      width:180px; 
+      height:180px; 
+      transform-style:preserve-3d; 
+      animation: driveAcross 7s cubic-bezier(.25,.8,.25,1) forwards; 
+    }
+    
+    .road-courier { 
+      position:absolute; 
+      top:calc(50% + 60px); 
+      left:0; 
+      font-size:90px; 
+      animation: courierAcross 7s linear forwards; 
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
+    }
+
+    /* Enhanced Bike + flying box docking */
+    .flying-box { 
+      position:fixed; 
+      width:140px; 
+      height:140px; 
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+      border:1px solid rgba(255, 255, 255, 0.3); 
+      box-shadow:0 15px 40px rgba(0,0,0,.4); 
+      border-radius:14px; 
+      z-index:400; 
+      will-change:transform,opacity;
+    }
+    
+    .road-bike { 
+      position:absolute; 
+      top:50%; 
+      left:0; 
+      transform:translateY(-50%); 
+      width:240px; 
+      height:140px; 
+    }
+    
+    .road-bike .bike-emoji { 
+      position:absolute; 
+      left:0; 
+      bottom:0; 
+      font-size:90px; 
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.3));
+    }
+    
+    .road-bike .box-on-bike { 
+      position:absolute; 
+      width:130px; 
+      height:130px; 
+      left:80px; 
+      top:-15px; 
+      background: linear-gradient(135deg, #7c3aed, #5b21b6);
+      border:1px solid rgba(255, 255, 255, 0.3); 
+      box-shadow:0 12px 30px rgba(0,0,0,.4); 
+      border-radius:14px; 
+      opacity:0; 
+      transform:scale(.95); 
+      transition:opacity .4s ease, transform .4s ease; 
+    }
+    
+    .road-bike .box-on-bike.show { 
+      opacity:1; 
+      transform:scale(1); 
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .container {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      
+      .packing-area {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      
+      .box-container.centered {
+        transform: rotateX(0deg) rotateY(0deg) translateX(0) scale(1.1);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 20px;
+        margin: 20px auto;
+      }
+      
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 24px;
+      }
+      
+      .hero .title {
+        font-size: 2rem;
+      }
+      
+      .card {
+        padding: 20px;
+      }
+      
+      .cinematic-stage {
+        min-height: 500px;
+      }
+      
+      .box-container {
+        width: 220px;
+        height: 220px;
+      }
+      
+      .box-face, .box-bottom {
+        width: 140px;
+        height: 140px;
+      }
+      
+      .box-side {
+        width: 140px;
+        height: 100px;
+      }
+      
+      .box-flap {
+        width: 140px;
+        height: 70px;
+      }
+      
+      .delivery-person {
+        font-size: 6rem;
+        right: -120px;
+        bottom: 40px;
+      }
+      
+      .delivery-person.visible {
+        right: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cinematic Background -->
+  <div class="cinematic-bg">
+    <div class="stars" id="stars"></div>
+    <div class="aura-pulse"></div>
+  </div>
+
+  <header>
+    <div class="brand">AuraChef <span class="accent">Quick</span></div>
+    <a href="#" class="back"><i class="fas fa-arrow-left"></i> Back to Agent</a>
+  </header>
+  
+  <div class="container">
+    <div class="hero">
+      <img id="heroImg" alt="dish" src="" />
+      <div>
+        <h1 class="title" id="heroTitle">Order</h1>
+        <div class="muted">Your premium cinematic delivery experience is starting now.</div>
+      </div>
+    </div>
+
+    <section class="card" id="analysis-card">
+      <h3><i class="fas fa-microchip"></i> Real-time Analysis</h3>
+      <div class="timeline" id="timeline"></div>
+    </section>
+
+    <section class="card" id="cart-card">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom: 20px;">
+        <h3 style="margin:0;"><i class="fas fa-shopping-cart"></i> Your Cart</h3>
+        <button id="confirm" class="btn" disabled><i class="fas fa-check"></i> Confirm Order</button>
+      </div>
+      <div class="cart" id="cart"></div>
+      <div class="total" id="totalRow" style="display:none;">
+        <strong>Total</strong>
+        <div id="total" class="price">₹0</div>
+      </div>
+    </section>
+
+    <section class="card cinematic-stage" id="packing-card">
+        <h3 style="text-align:center; width:100%; padding: 20px 0 0 0;"><i class="fas fa-box-open"></i> Packing & Handoff</h3>
+        <div class="packing-area" id="packingArea">
+            <div class="items-list">
+                <div class="muted" style="margin-bottom:12px;">Items to be packed:</div>
+                <div id="packChips"></div>
+            </div>
+            <div class="box-container" id="box">
+                <!-- Base of the box -->
+                <div class="box-bottom"></div>
+                <!-- Sides of the box -->
+                <div class="box-face box-side front"></div>
+                <div class="box-face box-side back"></div>
+                <div class="box-face box-side left"></div>
+                <div class="box-face box-side right"></div>
+                <!-- Top flaps -->
+                <div class="box-face box-flap flap-left"></div>
+                <div class="box-face box-flap flap-right"></div>
+                <div class="box-face box-flap flap-front"></div>
+                <div class="box-face box-flap flap-back"></div>
+                <!-- Top Logo -->
+                <div class="box-logo">A</div>
+            </div>
+        </div>
+        <div class="delivery-person" id="courier">🧑🏽‍🚀</div>
+        <div id="result"></div>
+        <div class="road" id="road"><div class="road-track" id="roadTrack"></div></div>
+    </section>
+  </div>
+
+<script>
+    // Create cinematic starfield
+    function createStars() {
+      const starsContainer = document.getElementById('stars');
+      const starCount = 150;
+      
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        // Random size (0.5px to 2px)
+        const size = Math.random() * 1.5 + 0.5;
+        
+        // Random animation delay
+        const delay = Math.random() * 5;
+        
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.animationDelay = `${delay}s`;
+        
+        starsContainer.appendChild(star);
+      }
+    }
+    
+    // Auth (pull real token; redirect if missing)
+    let token = null; 
+    try { 
+      token = JSON.parse(localStorage.getItem('auraChefUser'))?.token || null; 
+    } catch {}
+    
+    if (!token) { 
+      window.location.href = '/index.html'; 
+    }
+    
+    const HEADERS = { 
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}` 
+    };
+
+    // DOM Elements
+    const heroTitle = document.getElementById('heroTitle');
+    const heroImg = document.getElementById('heroImg');
+    const timeline = document.getElementById('timeline');
+    const cartEl = document.getElementById('cart');
+    const totalEl = document.getElementById('total');
+    const totalRow = document.getElementById('totalRow');
+    const confirmBtn = document.getElementById('confirm');
+    const packChips = document.getElementById('packChips');
+    const box = document.getElementById('box');
+    const courier = document.getElementById('courier');
+    const result = document.getElementById('result');
+    const packingArea = document.getElementById('packingArea');
+
+    // Data from previous page (mocked for demo)
+    const payload = (() => {
+      try { 
+        return JSON.parse(localStorage.getItem('ac_order_payload') || 'null'); 
+      } catch { 
+        return null; 
+      }
+    })();
+    
+    const items = Array.isArray(payload?.items) && payload.items.length ? 
+      payload.items : 
+      ['Organic Basil', 'San Marzano Tomatoes', 'Fresh Mozzarella', 'Extra Virgin Olive Oil'];
+    
+    const title = payload?.recipe?.title || 'Neapolitan Pizza Kit';
+    const image = payload?.recipe?.image || 'https://images.unsplash.com/photo-1593560704563-f176a2eb61db?auto=format&fit=crop&w=640&q=80';
+    
+    heroTitle.textContent = title;
+    heroImg.src = image;
+    heroImg.onerror = () => { 
+      heroImg.src = 'https://images.unsplash.com/photo-1593560704563-f176a2eb61db?auto=format&fit=crop&w=640&q=80'; 
+    };
+
+    const analysisSteps = [
+      { text: 'Analyzing kitchen inventory...', icon: 'fa-kitchen-set' },
+      { text: 'Matching pantry gaps with recipe...', icon: 'fa-magnifying-glass' },
+      { text: 'Sourcing best prices from partners...', icon: 'fa-tags' },
+      { text: 'Routing to nearest fulfillment center...', icon: 'fa-store' },
+      { text: 'Cart prepared and ready for review!', icon: 'fa-cart-plus' }
+    ];
+
+    const priced = items.map(n => ({ name: n, price: Math.round(49 + Math.random() * 200) }));
+
+    function addTimelineStep(idx) {
+        const step = analysisSteps[idx];
+        const s = document.createElement('div');
+        s.className = 'tstep';
+        s.innerHTML = `<i class="fas ${step.icon}"></i><div>${step.text}</div>`;
+        timeline.appendChild(s);
+        
+        // Stagger the animation start
+        s.style.animationDelay = `${idx * 150}ms`;
+        
+        // Add scanning effect
+        setTimeout(() => {
+          s.classList.add('animating');
+        }, idx * 150);
+        
+        setTimeout(() => {
+            s.classList.add('done');
+            s.querySelector('i').className = 'fas fa-check';
+        }, 200 + idx * 150);
+    }
+
+    async function runAnalysis() {
+        for (let i = 0; i < analysisSteps.length; i++) {
+            addTimelineStep(i);
+            await new Promise(r => setTimeout(r, i === analysisSteps.length - 1 ? 500 : 800));
+        }
+        buildCart();
+    }
+
+    function buildCart() {
+        if (!priced.length) {
+            cartEl.innerHTML = '<div class="muted">No items to order.</div>';
+            return;
+        }
+        
+        let delay = 0;
+        let total = 0;
+        
+        priced.forEach(({ name, price }) => {
+            total += price;
+            const line = document.createElement('div');
+            line.className = 'line';
+            line.innerHTML = `<div>${name}</div><div class="price">₹${price}</div>`;
+            cartEl.appendChild(line);
+            setTimeout(() => line.classList.add('show'), delay);
+            delay += 200;
+        });
+        
+        setTimeout(() => {
+            totalEl.textContent = '₹' + total;
+            totalRow.style.display = 'flex';
+            confirmBtn.disabled = false;
+            
+            // Add a subtle glow effect to the confirm button
+            confirmBtn.style.animation = 'pulse 2s infinite';
+        }, delay);
+    }
+
+    async function packAndHandoff(orderedItems) {
+        // 1. Prepare chips and centralize the view
+        packChips.innerHTML = '';
+        const chips = [];
+        
+        for (const [index, name] of orderedItems.entries()) {
+            const chip = document.createElement('div');
+            chip.className = 'item-chip';
+            chip.textContent = name;
+            packChips.appendChild(chip);
+            chips.push(chip);
+            setTimeout(() => chip.classList.add('visible'), index * 150);
+        }
+        
+        await new Promise(r => setTimeout(r, orderedItems.length * 150 + 600));
+        
+        // Center the box with enhanced animation
+        box.classList.add('centered');
+        await new Promise(r => setTimeout(r, 1200));
+        
+        // 2. Animate items flying into the box with cinematic bezier curves
+        const boxRect = box.getBoundingClientRect();
+        const boxCenterX = boxRect.left + boxRect.width / 2;
+        const boxCenterY = boxRect.top + boxRect.height / 2;
+
+        function flight(chip) {
+          return new Promise(resolve => {
+            const start = chip.getBoundingClientRect();
+            const sx = start.left + start.width / 2;
+            const sy = start.top + start.height / 2;
+            const ex = boxCenterX;
+            const ey = boxCenterY;
+            
+            // Control point for cinematic arc
+            const cx = (sx + ex)/2 + (Math.random()*160 - 80);
+            const cy = Math.min(sy, ey) - 180 - (Math.random()*60);
+
+            // Create flight clone with enhanced styling
+            const clone = document.createElement('div');
+            clone.className = 'flight-chip';
+            clone.textContent = chip.textContent;
+            document.body.appendChild(clone);
+            
+            const cw = clone.getBoundingClientRect().width;
+            const ch = clone.getBoundingClientRect().height;
+            const startOffsetX = sx - cw/2;
+            const startOffsetY = sy - ch/2;
+            
+            clone.style.left = startOffsetX + 'px';
+            clone.style.top = startOffsetY + 'px';
+
+            // Fade out original chip
+            chip.style.opacity = '.2';
+            chip.style.filter = 'blur(2px)';
+
+            const duration = 800 + Math.random()*200; // ms
+            const t0 = performance.now();
+            
+            function easeOutCubic(t){ 
+              return 1 - Math.pow(1 - t, 3); 
+            }
+            
+            function animate(now){
+              const raw = (now - t0) / duration;
+              const t = raw > 1 ? 1 : raw;
+              const e = easeOutCubic(t);
+              
+              // Quadratic bezier for smooth arc
+              const x = (1-e)*(1-e)*sx + 2*(1-e)*e*cx + e*e*ex;
+              const y = (1-e)*(1-e)*sy + 2*(1-e)*e*cy + e*e*ey;
+              
+              // Depth scaling & rotation for cinematic effect
+              const scale = 1 - 0.7*e;
+              const rot = 25 * (1 - e);
+              
+              clone.style.transform = `translate3d(${x - cw/2}px, ${y - ch/2}px, 0) scale(${scale}) rotate(${rot}deg)`;
+              clone.style.opacity = String(1 - 0.5*e);
+              
+              if (t < 1) {
+                requestAnimationFrame(animate);
+              } else {
+                // Bounce drop effect when item lands in box
+                clone.animate([
+                  { transform: `translate3d(${ex - cw/2}px, ${ey - ch/2}px, 0) scale(${scale})`, offset:0 },
+                  { transform: `translate3d(${ex - cw/2}px, ${ey - ch/2 - 8}px, 0) scale(${scale*0.9})`, offset:.4 },
+                  { transform: `translate3d(${ex - cw/2}px, ${ey - ch/2}px, 0) scale(${scale*0.85})`, offset:1 }
+                ], { 
+                  duration: 300, 
+                  easing: 'cubic-bezier(.34,1.56,.64,1)'
+                });
+                
+                setTimeout(()=> { 
+                  clone.remove(); 
+                  resolve(); 
+                }, 280);
+              }
+            }
+            
+            requestAnimationFrame(animate);
+          });
+        }
+
+        // Sequential flights with slight overlap for cinematic effect
+        for (let i=0; i<chips.length; i++) {
+          await flight(chips[i]);
+          await new Promise(r=> setTimeout(r, 80));
+        }
+        
+        // Close the box flaps
+        box.classList.add('closed');
+        await new Promise(r => setTimeout(r, 1000));
+        
+        // 3. Transition to road delivery: fly the box to a bike and drive
+        const road = document.getElementById('road');
+        const roadTrack = document.getElementById('roadTrack');
+        packingArea.classList.add('fade-out');
+        
+        if (road && roadTrack) {
+          road.classList.add('active');
+
+          // Create cinematic bike with a slot for the box
+          const bike = document.createElement('div');
+          bike.className = 'road-bike';
+          bike.innerHTML = '<div class="bike-emoji">🛵</div><div class="box-on-bike" id="boxOnBike"></div>';
+          road.appendChild(bike);
+
+          // Compute start (current box center) and end (bike slot center)
+          const startRect = box.getBoundingClientRect();
+          const sx = startRect.left + startRect.width/2;
+          const sy = startRect.top + startRect.height/2;
+
+          // Ensure layout paints so we can read target rect
+          await new Promise(r => requestAnimationFrame(() => r()));
+          const slot = bike.querySelector('#boxOnBike');
+          const endRect = slot.getBoundingClientRect();
+          const ex = endRect.left + endRect.width/2;
+          const ey = endRect.top + endRect.height/2;
+
+          // Create a flying box clone and animate along a bezier
+          const fly = document.createElement('div');
+          fly.className = 'flying-box';
+          document.body.appendChild(fly);
+          const fb = fly.getBoundingClientRect();
+          fly.style.left = (sx - fb.width/2) + 'px';
+          fly.style.top  = (sy - fb.height/2) + 'px';
+
+          // Enhanced bezier curve for cinematic flight
+          const cx = (sx + ex)/2 + (Math.random()*200 - 100);
+          const cy = Math.min(sy, ey) - 200 - (Math.random()*60);
+          const duration = 1100;
+          const t0 = performance.now();
+          
+          function easeOutCubic(t){ 
+            return 1 - Math.pow(1 - t, 3); 
+          }
+          
+          await new Promise(resolve => {
+            function anim(now){
+              const raw = (now - t0)/duration; 
+              const t = raw > 1 ? 1 : raw; 
+              const e = easeOutCubic(t);
+              
+              const x = (1-e)*(1-e)*sx + 2*(1-e)*e*cx + e*e*ex;
+              const y = (1-e)*(1-e)*sy + 2*(1-e)*e*cy + e*e*ey;
+              const scale = 1 - 0.2*e;
+              
+              fly.style.transform = `translate(${x - fb.width/2}px, ${y - fb.height/2}px) scale(${scale})`;
+              fly.style.opacity = String(1 - 0.3*e);
+              
+              if (t < 1) {
+                requestAnimationFrame(anim);
+              } else {
+                resolve();
+              }
+            }
+            requestAnimationFrame(anim);
+          });
+
+          // Docked on bike
+          fly.remove();
+          slot.classList.add('show');
+
+          // Drive across with enhanced animation
+          bike.style.animation = 'driveAcross 7s cubic-bezier(.25,.8,.25,1) forwards';
+          await new Promise(r => setTimeout(r, 7100));
+          bike.remove();
+        }
+        
+        return true;
+    }
+
+    // Back link navigation
+    document.querySelector('.back')?.addEventListener('click', (e) => { 
+      e.preventDefault(); 
+      window.location.href = '/AC_Agent.html'; 
+    });
+
+    confirmBtn.addEventListener('click', async () => {
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Placing...';
+        result.textContent = '';
+        result.classList.remove('show');
+
+        // Dim other cards to focus on the cinematic experience
+        document.getElementById('analysis-card').style.opacity = '0.3';
+        document.getElementById('cart-card').style.opacity = '0.3';
+        document.getElementById('packing-card').scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+
+        try {
+          // Real API call to server simulation endpoint
+          const resp = await fetch('/api/orders/simulate', { 
+            method: 'POST', 
+            headers: HEADERS, 
+            body: JSON.stringify({ items: priced.map(p => p.name) }) 
+          });
+          
+          const data = await resp.json();
+          if (!resp.ok) throw new Error(data.message || 'Simulation failed');
+
+          await packAndHandoff(priced.map(p => p.name));
+          
+          result.innerHTML = `
+            <i class="fas fa-check-circle" style="color:var(--success); font-size: 1.8rem;"></i> 
+            <div style="margin-top: 10px;">
+              Order <strong>${data.orderId}</strong> placed successfully!<br>
+              <span style="font-size: 1rem; opacity: 0.9;">It's on its way with cinematic delivery.</span>
+            </div>
+          `;
+          result.style.color = 'var(--text-primary)';
+        } catch (e) {
+            result.innerHTML = `
+              <i class="fas fa-exclamation-circle" style="color:var(--danger); font-size: 1.8rem;"></i>
+              <div style="margin-top: 10px;">
+                Order failed<br>
+                <span style="font-size: 1rem; opacity: 0.9;">${e.message}</span>
+              </div>
+            `;
+            result.style.background = 'rgba(239, 68, 68, 0.1)';
+            result.style.borderColor = 'rgba(239, 68, 68, 0.3)';
+        } finally {
+            result.classList.add('show');
+            confirmBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Order';
+            // Don't re-enable button after successful order
+        }
+    });
+
+    // Initialize cinematic elements and start the process
+    document.addEventListener('DOMContentLoaded', () => {
+      createStars();
+      runAnalysis();
+    });
+</script>
+</body>
+</html>
